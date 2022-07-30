@@ -22,33 +22,47 @@ user_agent_desktop = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '\
 
 headers = { 'User-Agent': user_agent_desktop}
 
+
+table_name = "PRICE_TODAY_ID"
+#DEFINE TABLE
+def drop_table(table_name):
+    cur= conn.cursor()
+    postgreSQL_drop_Query = "DROP TABLE IF EXISTS " + table_name
+    cur.execute(postgreSQL_drop_Query,)
+    conn.commit()
+    print("table DROPPED successfully ")
+drop_table(str(table_name))
+
+
 #DEFINE TABLE
 def define_table():
     cur= conn.cursor()
-    cur.execute(""" CREATE TABLE PRICE_TODAY_ID (ID SERIAL PRIMARY KEY ,DATE TEXT, STOCK_NAME TEXT, STOCK_SYMBOL TEXT , NUM_TRNX float, MAX_PRICE float,
+    cur.execute(""" CREATE TABLE IF NOT EXISTS PRICE_TODAY_ID (ID SERIAL PRIMARY KEY ,DATE TEXT, STOCK_NAME TEXT, STOCK_SYMBOL TEXT , NUM_TRNX float, MAX_PRICE float,
                     MIN_PRICE float, CLOSING_PRICE float, TRADED_SHARES float, AMOUNT float, PREVIOUS_PRICE float,
                     DIFFERENCE float, PC_CHANGE float )""")
     conn.commit()
     print("table created successfully")
-# define_table()
+
+define_table()
 
 
 #TRUNCATE TABLE
-def truncate_table():
+def truncate_table(table_name):
     cur= conn.cursor()
-    cur.execute(" TRUNCATE price_today_id;")
+    postgreSQL_truncate_Query = "TRUNCATE" + str(table_name)
+    cur.execute(postgreSQL_truncate_Query, )
     conn.commit()
     print("table TRUNCATED successfully ")
-truncate_table()
+# truncate_table(price_today_id)
 
 #DELETE DATAS FROM TABLE TABLE
-def delete_from_table(table_name):
+def delete_from_table(table_name,date):
     cur= conn.cursor()
-    cur.execute(" DELETE FROM price_today_id WHERE date = '2021-11-17' ")
+    postgreSQL_delete_Query = "DELETE FROM " + str(table_name) + " WHERE date = " + str(date)
+    cur.execute(postgreSQL_delete_Query,)
     conn.commit()
     print("table deleted successfully :  ", table_name)
-
-# delete_from_table("price_today_id")
+# delete_from_table("price_today_id","2022-07-28")
 
 url = 'http://www.nepalstock.com/main/todays_price/index/4/?startDate=&stock-symbol=&_limit=300'
 
