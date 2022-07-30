@@ -5,7 +5,7 @@ import psycopg2
 from datetime import date
 from tabulate import tabulate
 
-print("Program Starting")
+print("Program Starting!!!")
 
 #CONNECT TO POSTGRESQL
 db_name = 'postgres'
